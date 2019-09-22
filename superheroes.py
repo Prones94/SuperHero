@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 
 class Ability:
@@ -15,7 +15,7 @@ class Ability:
         '''
             Returns a value between 0 and value set by self.max_damage
         '''
-        attack_stat = random.randint(0, self.max_damage)
+        attack_stat = randint(0, self.max_damage)
         return attack_stat
 
 
@@ -33,12 +33,10 @@ class Armor:
         '''
             Return a random value between 0 and the initialized self.max_block strength
         '''
-        block_stat = random.randint(0, self.max_block)
-        return block_stat
-
+        return randint(0, self.max_block)
 
 class Hero:
-    def __init__(self, name, abilities, starting_health = 100):
+    def __init__(self, name, starting_health = 100):
         ''' 
           Instance properties:
           abilities [list]
@@ -49,7 +47,7 @@ class Hero:
         '''
         self.name = name
         self.starting_health = starting_health
-        self.current_health = starting_health
+        self.current_health = self.starting_health
         self.abilities = []
         self.armors = []
         
@@ -81,16 +79,30 @@ class Hero:
             Runs `block` method on each armor.
             Returns sum of all blocks
         '''
-        block_total = 0
+        total = 0
         for armor in self.armors:
-            block_ed = armor.block()
-            block_total += block_ed
-        return block_total - damage_amt 
+            block_amount = armor.block()
+            total += block_amount
+        return abs(total - damage_amt)
+
+    def take_damage(self, damage):
+        '''
+            Updates self.current_health to reflect the damage minus the defense.
+        '''
+        taken_damage = self.defend(damage)
+        self.current_health = self.current_health - taken_damage
+
+    def is_alive(self):  
+        '''
+            Return True or False depending on whether the hero is alive or not.
+        '''
+        return self.current_health > 0
 
 if __name__ == '__main__':
-    ability = Ability("Great Debugging", 50)
-    another_ability = Ability("Smarty Pants", 90)
+
     hero = Hero("Grace Hopper", 200)
-    hero.add_ability(ability)
-    hero.add_ability(another_ability)
-    print(hero.attack())
+    hero.take_damage(150)
+    print(hero.is_alive())
+    hero.take_damage(15000)
+    print(hero.is_alive())
+    

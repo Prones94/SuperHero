@@ -94,9 +94,29 @@ class Hero:
 
     def is_alive(self):  
         '''
-            Return True or False depending on whether the hero is alive or not.
+            Return True or False depending on whether the hero fainted or not.
         '''
         return self.current_health > 0
+
+    def fight(self, opponent):  
+        ''' 
+            Current Hero will take turns fighting the opponent hero passed in.
+        '''
+        # while both fighters are alive
+        while True:
+            if self.is_alive(): # check to see if user is still alive
+                atk_pwr = self.attack() # will give character an attack value
+                opponent.take_damage(atk_pwr) # opponent takes damage from self attacking opponent
+            else: # opponent was too strong and you fainted
+                print(f'Oh no! {opponent.name} was too strong. You lost all your health and fainted.')
+                break
+            if opponent.is_alive(): # check to see if opponent is alive
+                atk_pwr = opponent.attack() # will give opponent an attack value
+                self.take_damage(atk_pwr) # self will take damage from opponents attack
+            else: # user was too strong and opponent fainted
+                print(f'{self.name} beat {opponent.name}! Good job!')
+                break
+
 
 if __name__ == '__main__':
 

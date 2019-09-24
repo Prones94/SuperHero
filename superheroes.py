@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 
 class Ability:
@@ -50,6 +50,8 @@ class Hero:
         self.current_health = self.starting_health
         self.abilities = []
         self.armors = []
+        self.deaths = 0
+        self.kills = 0
         
     
     def add_ability(self, ability):
@@ -73,6 +75,12 @@ class Hero:
             Armor: Armor Object
         '''
         self.armors.append(armor)
+
+    def view_stats(self):
+        if self.deaths > 0:
+            print(f'{self.name} has {self.kills} kills under his belt.')
+        else:
+            print(f'{self.name} has {self.deaths} deaths.')
 
     def defend(self, damage_amt):
         '''
@@ -98,6 +106,18 @@ class Hero:
         '''
         return self.current_health > 0
 
+    def add_kill(self, num_kills):
+        ''' 
+            Update self.kills with num_kills 
+        '''
+        self.kills += num_kills
+    
+    def add_deaths(self, num_deaths):
+        ''' 
+            Update self.deaths with num_deaths
+        '''
+        self.deaths += num_deaths
+
     def fight(self, opponent):  
         ''' 
             Current Hero will take turns fighting the opponent hero passed in.
@@ -109,13 +129,16 @@ class Hero:
                 opponent.take_damage(atk_pwr) # opponent takes damage from self attacking opponent
             else: # opponent was too strong and you fainted
                 print(f'Oh no! {opponent.name} was too strong. You lost all your health and fainted.')
+                self.add_deaths(1)
                 break
             if opponent.is_alive(): # check to see if opponent is alive
                 atk_pwr = opponent.attack() # will give opponent an attack value
                 self.take_damage(atk_pwr) # self will take damage from opponents attack
             else: # user was too strong and opponent fainted
                 print(f'{self.name} beat {opponent.name}! Good job!')
+                self.add_kill(1)
                 break
+
 
 class Weapon(Ability):
     def attack(self):
@@ -155,6 +178,31 @@ class Team:
         Add Hero object to self.heroes.
         '''
         self.heroes.append(hero)
+
+    def attack(self, other_team):
+        '''
+            Battle each team against each other.
+        '''
+        while len(self.heroes) > 0 and len(other_team.heroes) > 0:
+            my_hero = choice(self.heroes)
+            opponent_hero  = choice(self.heroes)
+            my_hero.fight(opponent_hero)
+        
+
+    def revive_heroes(self, health=100):
+        ''' 
+            Reset all heroes health to starting_health
+        '''
+        for hero in self.heroes:
+            hero.current_health = health
+
+    def stats(self):
+        '''
+            Print team statistics
+        '''
+        for hero in self.heroes:
+            print(hero.view_stats)
+
 
 if __name__ == '__main__':
     hero1 = Hero("Wonder Woman")

@@ -82,7 +82,7 @@ class Hero:
         else:
             print(f'{self.name} has {self.deaths} deaths.')
 
-    def defend(self, damage_amt):
+    def defend(self, damage_amt=0):
         '''
             Runs `block` method on each armor.
             Returns sum of all blocks
@@ -91,7 +91,7 @@ class Hero:
         for armor in self.armors:
             block_amount = armor.block()
             total += block_amount
-        return abs(total - damage_amt)
+        return total
 
     def take_damage(self, damage):
         '''
@@ -130,6 +130,7 @@ class Hero:
             else: # opponent was too strong and you fainted
                 print(f'Oh no! {opponent.name} was too strong. You lost all your health and fainted.')
                 self.add_deaths(1)
+                opponent.add_kill(1)
                 break
             if opponent.is_alive(): # check to see if opponent is alive
                 atk_pwr = opponent.attack() # will give opponent an attack value
@@ -137,6 +138,7 @@ class Hero:
             else: # user was too strong and opponent fainted
                 print(f'{self.name} beat {opponent.name}! Good job!')
                 self.add_kill(1)
+                opponent.add_deaths(1)
                 break
 
 

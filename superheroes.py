@@ -126,13 +126,6 @@ class Hero:
         '''
         self.abilities.append(weapon)
     
-    def add_armor(self, armor):
-        '''
-            Add Armor to self.armors
-            armor: Armor Object
-        '''
-        self.armors.append(armor)
-
     def fight(self, opponent):  
         ''' 
             Current Hero will take turns fighting the opponent hero passed in.
@@ -163,7 +156,45 @@ class Arena:
             team_one: None
             team_two: None
         '''
-        
+        self.team_one = Team('Team A')
+        self.team_two = Team('Team B')
+    
+    def create_ability(self):
+        '''
+            Prompt for Ability information.
+            return Ability with values from user Input
+        '''
+        name = input('What abilities would you like your hero to have?')
+        str_atk = input('How much attack power would you like your abilities to have?')
+        attack_strength = int(str_atk)
+        return Ability(name,attack_strength)
+
+    def create_weapon(self):
+        '''Prompt user for Weapon information
+            return Weapon with values from user input.
+        '''
+        name = input('You get to choose a weapon, please name it: ')
+        max_damage = int(input('how much can your weapon damage people? '))
+        return Weapon(name, max_damage)
+    
+    def create_armor(self):
+        '''
+            Prompt user for Armor information
+            return Armor with values from user input.
+        '''
+        name = input('Now you can choose some armour. Please type it in: ')
+        max_block = int(input('Now how much defense would you like to add to your armour? '))
+        return Armor(name, max_block)
+
+    def create_hero(self):
+        '''
+            Prompt user for Hero information
+            return Hero with values from user input.
+        '''
+        name = input('Please name your hero:')
+        health = int(input('Please give your hero health! Otherwise he\'ll be at noob level:'))
+        return Hero(name, health)
+
 class Weapon(Ability):
     def attack(self):
         """  

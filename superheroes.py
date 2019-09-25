@@ -52,6 +52,8 @@ class Hero:
         self.armors = []
         self.deaths = 0
         self.kills = 0
+
+        # self.team = team_obj
         
     
     def add_ability(self, ability):
@@ -82,7 +84,7 @@ class Hero:
         else:
             print(f'{self.name} has {self.deaths} deaths.')
 
-    def defend(self, damage_amt=0):
+    def defend(self, damage_amt=0 ):
         '''
             Runs `block` method on each armor.
             Returns sum of all blocks
@@ -91,7 +93,7 @@ class Hero:
         for armor in self.armors:
             block_amount = armor.block()
             total += block_amount
-        return total
+        return abs(total - damage_amt)
 
     def take_damage(self, damage):
         '''
@@ -118,6 +120,19 @@ class Hero:
         '''
         self.deaths += num_deaths
 
+    def add_weapon(self, weapon):
+        '''
+            Add weapon to self.abilities
+        '''
+        self.abilities.append(weapon)
+    
+    def add_armor(self, armor):
+        '''
+            Add Armor to self.armors
+            armor: Armor Object
+        '''
+        self.armors.append(armor)
+
     def fight(self, opponent):  
         ''' 
             Current Hero will take turns fighting the opponent hero passed in.
@@ -129,19 +144,26 @@ class Hero:
                 opponent.take_damage(atk_pwr) # opponent takes damage from self attacking opponent
             else: # opponent was too strong and you fainted
                 print(f'Oh no! {opponent.name} was too strong. You lost all your health and fainted.')
-                self.add_deaths(1)
                 opponent.add_kill(1)
+                self.add_deaths(1)
                 break
             if opponent.is_alive(): # check to see if opponent is alive
                 atk_pwr = opponent.attack() # will give opponent an attack value
                 self.take_damage(atk_pwr) # self will take damage from opponents attack
             else: # user was too strong and opponent fainted
                 print(f'{self.name} beat {opponent.name}! Good job!')
-                self.add_kill(1)
                 opponent.add_deaths(1)
+                self.add_kill(1)
                 break
 
-
+class Arena:
+    def __init__(self):
+        '''
+            Instantiate properties
+            team_one: None
+            team_two: None
+        '''
+        
 class Weapon(Ability):
     def attack(self):
         """  
@@ -185,10 +207,17 @@ class Team:
         '''
             Battle each team against each other.
         '''
-        while len(self.heroes) > 0 and len(other_team.heroes) > 0:
-            my_hero = choice(self.heroes)
-            opponent_hero  = choice(self.heroes)
+        while len(self.all_alive_heroes()) > 0 and len(other_team.all_alive_heroes()) > 0:
+            my_hero = choice(self.all_alive_heroes())
+            opponent_hero  = choice(other_team.all_alive_heroes())
             my_hero.fight(opponent_hero)
+
+    def all_alive_heroes(self):
+        alive_hero = []
+        for hero in self.heroes:
+            if hero.is_alive():
+                alive_hero.append(hero)
+        return alive_hero
         
 
     def revive_heroes(self, health=100):
@@ -206,16 +235,16 @@ class Team:
             print(hero.view_stats)
 
 
-if __name__ == '__main__':
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
+# if __name__ == '__main__':
+#     hero1 = Hero("Wonder Woman")
+#     hero2 = Hero("Dumbledore")
+#     ability1 = Ability("Super Speed", 300)
+#     ability2 = Ability("Super Eyes", 130)
+#     ability3 = Ability("Wizard Wand", 80)
+#     ability4 = Ability("Wizard Beard", 20)
+#     hero1.add_ability(ability1)
+#     hero1.add_ability(ability2)
+#     hero2.add_ability(ability3)
+#     hero2.add_ability(ability4)
+#     hero1.fight(hero2)
     

@@ -81,6 +81,7 @@ class Hero:
     def view_stats(self):
         if self.deaths > 0:
             kd_ratio = self.kills // self.deaths
+            return kd_ratio
         else:
             return self.kills
     def defend(self, damage_amt=0 ):
@@ -200,8 +201,10 @@ class Arena:
         # Prompt the user for the number of Heroes on team one
         # call self.create_hero() for every hero that the user wants to add to team one.
         # Add the created hero to team one.
+        team_name = input('Welcome user! Please name the first team!')
         add_hero_to_one = input('Hello there, how many heroes would you like to add to team one?')
-        for index in range(add_hero_to_one):
+        self.team_one = Team(team_name)
+        for _ in range(add_hero_to_one):
             hero = self.create_hero()
             self.team_one.add_hero(hero)
 
@@ -211,8 +214,10 @@ class Arena:
         # Prompt the user for the number of Heroes on team two
         # call self.create_hero() for every hero that the user wants to add to team two.
         # Add the created hero to team two.
+        team_name = input('Welcome user! Please name the second team!')
         add_hero_to_two = input('Hello there, how many heroes would you like to add to team two?')
-        for index in range(add_hero_to_two):
+        self.team_two = Team(team_name)
+        for _ in range(add_hero_to_two):
             hero = self.create_hero()
             self.team_two.add_hero(hero)
 
@@ -231,8 +236,8 @@ class Arena:
        # Declare winning team
        # Show both teams average kill/death ratio.
        # Show surviving heroes.
-       team_one_stats = self.team_one.view_stats()
-       team_two_stats = self.team_two.view_stats()
+       team_one_stats = self.team_one.stats()
+       team_two_stats = self.team_two.stats()
        if team_one_stats > team_two_stats:
            print(f'{self.team_one.name} wins match!')
            print(f'These heroes are still alive on the team: ')
@@ -247,7 +252,7 @@ class Arena:
             print(f'Match was a draw, no one wins.')
 
        print(f'Team {self.team_one.name} has an average ratio of {team_two_stats}.')
-       print(f'Team {self.team_two.name} has an average ratio of {team_two.stats}.')
+       print(f'Team {self.team_two.name} has an average ratio of {team_two_stats}.')
 
 
 class Weapon(Ability):
@@ -323,16 +328,27 @@ class Team:
             return  sum
 
 
-# if __name__ == '__main__':
-#     hero1 = Hero("Wonder Woman")
-#     hero2 = Hero("Dumbledore")
-#     ability1 = Ability("Super Speed", 300)
-#     ability2 = Ability("Super Eyes", 130)
-#     ability3 = Ability("Wizard Wand", 80)
-#     ability4 = Ability("Wizard Beard", 20)
-#     hero1.add_ability(ability1)
-#     hero1.add_ability(ability2)
-#     hero2.add_ability(ability3)
-#     hero2.add_ability(ability4)
-#     hero1.fight(hero2)
-    
+if __name__ == "__main__":
+    game_is_running = True
+
+    # Instantiate Game Arena
+    arena = Arena()
+
+    #Build Teams
+    arena.build_team_one()
+    arena.build_team_two()
+
+    while game_is_running:
+
+        arena.team_battle()
+        arena.show_stats()
+        play_again = input("Play Again? Y or N: ")
+
+        #Check for Player Input
+        if play_again.lower() == "n":
+            game_is_running = False
+
+        else:
+            #Revive heroes to play again
+            arena.team_one.revive_heroes()
+            arena.team_two.revive_heroes()

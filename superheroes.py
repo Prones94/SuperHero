@@ -80,10 +80,9 @@ class Hero:
 
     def view_stats(self):
         if self.deaths > 0:
-            print(f'{self.name} has {self.kills} kills under his belt.')
+            kd_ratio = self.kills // self.deaths
         else:
-            print(f'{self.name} has {self.deaths} deaths.')
-
+            return self.kills
     def defend(self, damage_amt=0 ):
         '''
             Runs `block` method on each armor.
@@ -195,6 +194,62 @@ class Arena:
         health = int(input('Please give your hero health! Otherwise he\'ll be at noob level:'))
         return Hero(name, health)
 
+    def build_team_one(self):
+        '''Prompt the user to build team_one '''
+        # TODO: This method should allow a user to create team one.
+        # Prompt the user for the number of Heroes on team one
+        # call self.create_hero() for every hero that the user wants to add to team one.
+        # Add the created hero to team one.
+        add_hero_to_one = input('Hello there, how many heroes would you like to add to team one?')
+        for index in range(add_hero_to_one):
+            hero = self.create_hero()
+            self.team_one.add_hero(hero)
+
+    def build_team_two(self):
+        '''Prompt the user to build team_two'''
+        # TODO: This method should allow a user to create team two.
+        # Prompt the user for the number of Heroes on team two
+        # call self.create_hero() for every hero that the user wants to add to team two.
+        # Add the created hero to team two.
+        add_hero_to_two = input('Hello there, how many heroes would you like to add to team two?')
+        for index in range(add_hero_to_two):
+            hero = self.create_hero()
+            self.team_two.add_hero(hero)
+
+    def team_battle(self):
+        '''Battle team_one and team_two together.'''
+        # TODO: This method should battle the teams together.
+        # Call the attack method that exists in your team objects
+        # for that battle functionality.
+        self.team_one.attack(self.team_two)
+
+    def show_stats(self):
+       '''Prints team statistics to terminal.'''
+       # TODO: This method should print out battle statistics
+       # including each team's average kill/death ratio.
+       # Required Stats:
+       # Declare winning team
+       # Show both teams average kill/death ratio.
+       # Show surviving heroes.
+       team_one_stats = self.team_one.view_stats()
+       team_two_stats = self.team_two.view_stats()
+       if team_one_stats > team_two_stats:
+           print(f'{self.team_one.name} wins match!')
+           print(f'These heroes are still alive on the team: ')
+           for hero in self.team_one.heroes:
+               print(f' - {hero.name}')
+       elif team_one_stats < team_two_stats:
+            print(f'{self.team_two.name} wins the match!')
+            print(f'These heroes are still alive on this team: ')
+            for hero in self.team_two.heroes:
+                print(f' - {hero.name}')
+       else:
+            print(f'Match was a draw, no one wins.')
+
+       print(f'Team {self.team_one.name} has an average ratio of {team_two_stats}.')
+       print(f'Team {self.team_two.name} has an average ratio of {team_two.stats}.')
+
+
 class Weapon(Ability):
     def attack(self):
         """  
@@ -262,8 +317,10 @@ class Team:
         '''
             Print team statistics
         '''
+        sum = 0
         for hero in self.heroes:
-            print(hero.view_stats)
+            sum += hero.view_stats
+            return  sum
 
 
 # if __name__ == '__main__':

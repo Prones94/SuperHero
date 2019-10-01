@@ -339,7 +339,7 @@ if __name__ == "__main__":
     arena.build_team_two()
 
     while game_is_running:
-        print('Working')
+
         arena.team_battle()
         arena.show_stats()
         play_again = input("Play Again? Y or N: ")

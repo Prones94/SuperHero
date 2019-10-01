@@ -189,8 +189,36 @@ class Arena:
         '''
         name = input('Please name your hero:')
         health = int(input('Please give your hero health! Otherwise he\'ll be at noob level:'))
-        return Hero(name, health)
-
+        hero =  Hero(name, health)
+        add_abilties = input('Add abilities? Use y/n')
+        if 'y' in add_abilties.lower():
+            while True:
+                ability = self.create_ability()
+                hero.add_ability(ability)
+                extra_ability = input('Any extra abilties? Answer y/n')
+                if 'y' not in extra_ability.lower():
+                    break
+        
+        add_weapon = input('Alright, time to add some abilties! Answer y/n')
+        if 'y' in add_weapon.lower():
+            while True:
+                weapon = self.create_weapon()
+                hero.add_weapon(weapon)
+                extra_weapon = input('Any extra weapons? Answer y/n')
+                if 'y' not in extra_weapon.lower():
+                    break
+        
+        add_armour = input('Alright, time to add armour? Answer y/n')
+        if 'y' in add_armour.lower():
+            while True:
+                armour = self.create_armor()
+                hero.add_armor(armour)
+                extra_armour = input('Any extra armour? Answer y/n')
+                if 'y' not in extra_armour.lower():
+                    break
+        
+        return hero
+        
     def build_team_one(self):
         '''Prompt the user to build team_one '''
         # TODO: This method should allow a user to create team one.

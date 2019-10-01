@@ -1,5 +1,5 @@
 from random import randint, choice
-
+"""Credit to Ben Lafferty for helping me with my code."""
 
 class Ability:
     def __init__(self, name, attack_strength):
@@ -225,8 +225,8 @@ class Arena:
         # Prompt the user for the number of Heroes on team one
         # call self.create_hero() for every hero that the user wants to add to team one.
         # Add the created hero to team one.
-        team_name = input('Welcome user! Please name the first team!')
-        add_hero_to_one = input('Hello there, how many heroes would you like to add to team one?')
+        team_name = input('NAme first team: ')
+        add_hero_to_one = input('Any extra people?')
         self.team_one = Team(team_name)
         for _ in range(int(add_hero_to_one)):
             hero = self.create_hero()
@@ -238,8 +238,8 @@ class Arena:
         # Prompt the user for the number of Heroes on team two
         # call self.create_hero() for every hero that the user wants to add to team two.
         # Add the created hero to team two.
-        team_name = input('Welcome user! Please name the second team!')
-        add_hero_to_two = input('Hello there, how many heroes would you like to add to team two?')
+        team_name = input('Name second team: ')
+        add_hero_to_two = input('Any extra people?')
         self.team_two = Team(team_name)
         for _ in range(int(add_hero_to_two)):
             hero = self.create_hero()
@@ -250,7 +250,6 @@ class Arena:
         # TODO: This method should battle the teams together.
         # Call the attack method that exists in your team objects
         # for that battle functionality.
-        print(f'Working')
         self.team_one.attack(self.team_two)
 
     def show_stats(self):
@@ -333,8 +332,8 @@ class Team:
         '''
             Battle each team against each other.
         '''
-        print("Working attack")
         while len(self.remainder_heroes()[0]) < len(self.heroes) and len(other_team.remainder_heroes()[0]) < len(self.heroes):
+
             my_hero = choice(self.remainder_heroes()[1])
             opponent_hero  = choice(other_team.remainder_heroes()[1])
             my_hero.fight(opponent_hero)

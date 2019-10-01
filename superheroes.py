@@ -84,23 +84,21 @@ class Hero:
             return kd_ratio
         else:
             return self.kills
-    def defend(self, damage_amt=0 ):
+    def defend(self, damage_amt = 0 ):
         '''
             Runs `block` method on each armor.
             Returns sum of all blocks
         '''
         total = 0
         for armor in self.armors:
-            block_amount = armor.block()
-            total += block_amount
-        return abs(total - damage_amt)
+            total += armor.block
+        return total
 
     def take_damage(self, damage):
         '''
             Updates self.current_health to reflect the damage minus the defense.
         '''
-        taken_damage = self.defend(damage)
-        self.current_health = self.current_health - taken_damage
+        self.current_health -= damage - self.defend()
 
     def is_alive(self):  
         '''
@@ -136,7 +134,6 @@ class Hero:
                 atk_pwr = self.attack() # will give character an attack value
                 opponent.take_damage(atk_pwr) # opponent takes damage from self attacking opponent
             else: # opponent was too strong and you fainted
-                print(f'Oh no! {opponent.name} was too strong. You lost all your health and fainted.')
                 opponent.add_kill(1)
                 self.add_deaths(1)
                 break
@@ -144,7 +141,6 @@ class Hero:
                 atk_pwr = opponent.attack() # will give opponent an attack value
                 self.take_damage(atk_pwr) # self will take damage from opponents attack
             else: # user was too strong and opponent fainted
-                print(f'{self.name} beat {opponent.name}! Good job!')
                 opponent.add_deaths(1)
                 self.add_kill(1)
                 break
@@ -204,7 +200,7 @@ class Arena:
         team_name = input('Welcome user! Please name the first team!')
         add_hero_to_one = input('Hello there, how many heroes would you like to add to team one?')
         self.team_one = Team(team_name)
-        for _ in range(add_hero_to_one):
+        for _ in range(int(add_hero_to_one)):
             hero = self.create_hero()
             self.team_one.add_hero(hero)
 
@@ -217,7 +213,7 @@ class Arena:
         team_name = input('Welcome user! Please name the second team!')
         add_hero_to_two = input('Hello there, how many heroes would you like to add to team two?')
         self.team_two = Team(team_name)
-        for _ in range(add_hero_to_two):
+        for _ in range(int(add_hero_to_two)):
             hero = self.create_hero()
             self.team_two.add_hero(hero)
 
@@ -226,6 +222,7 @@ class Arena:
         # TODO: This method should battle the teams together.
         # Call the attack method that exists in your team objects
         # for that battle functionality.
+        print(f'Working')
         self.team_one.attack(self.team_two)
 
     def show_stats(self):
@@ -294,22 +291,25 @@ class Team:
         '''
         self.heroes.append(hero)
 
+    def remainder_heroes(self):
+        dead_hero = []
+        alive_hero = []
+        for hero in self.heroes:
+            if hero.is_alive() == False:
+                dead_hero.append(hero)
+            else:
+                alive_hero.append(hero)
+        return dead_hero, alive_hero
+
     def attack(self, other_team):
         '''
             Battle each team against each other.
         '''
-        while len(self.all_alive_heroes()) > 0 and len(other_team.all_alive_heroes()) > 0:
-            my_hero = choice(self.all_alive_heroes())
-            opponent_hero  = choice(other_team.all_alive_heroes())
+        print("Working attack")
+        while len(self.remainder_heroes()[0]) < len(self.heroes) and len(other_team.remainder_heroes()[0]) < len(self.heroes):
+            my_hero = choice(self.remainder_heroes()[1])
+            opponent_hero  = choice(other_team.remainder_heroes()[1])
             my_hero.fight(opponent_hero)
-
-    def all_alive_heroes(self):
-        alive_hero = []
-        for hero in self.heroes:
-            if hero.is_alive():
-                alive_hero.append(hero)
-        return alive_hero
-        
 
     def revive_heroes(self, health=100):
         ''' 
@@ -339,7 +339,7 @@ if __name__ == "__main__":
     arena.build_team_two()
 
     while game_is_running:
-
+        print('Working')
         arena.team_battle()
         arena.show_stats()
         play_again = input("Play Again? Y or N: ")

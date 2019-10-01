@@ -66,10 +66,10 @@ class Hero:
         '''
             Calculates the total attack of all abilities and returns sum        
         '''
-        attack_sum = 0
+        attack_total = 0
         for ability in self.abilities:
-            attack_sum += ability.attack()
-        return attack_sum
+            attack_total += ability.attack()
+        return attack_total
 
     def add_armor(self, armor):
         '''
@@ -80,8 +80,8 @@ class Hero:
 
     def view_stats(self):
         if self.deaths > 0:
-            kd_ratio = self.kills // self.deaths
-            return kd_ratio
+            kill_two_death = self.kills // self.deaths
+            return kill_two_death
         else:
             return self.kills
     def defend(self, damage_amt = 0 ):
@@ -89,10 +89,10 @@ class Hero:
             Runs `block` method on each armor.
             Returns sum of all blocks
         '''
-        total = 0
+        full_amount_hp = 0
         for armor in self.armors:
-            total += armor.block()
-        return total
+            full_amount_hp += armor.block()
+        return full_amount_hp
 
     def take_damage(self, damage):
         '''
@@ -160,9 +160,9 @@ class Arena:
             Prompt for Ability information.
             return Ability with values from user Input
         '''
-        name = input('What abilities would you like your hero to have?')
-        str_atk = input('How much attack power would you like your abilities to have?')
-        attack_strength = int(str_atk)
+        name = input('Please name one ability: ')
+        ability_pwr = input('How much attack power for this ability: ')
+        attack_strength = int(ability_pwr)
         return Ability(name,attack_strength)
 
     def create_weapon(self):
@@ -170,8 +170,8 @@ class Arena:
             return Weapon with values from user input.
         '''
         name = input('You get to choose a weapon, please name it: ')
-        max_damage = int(input('how much can your weapon damage people? '))
-        return Weapon(name, max_damage)
+        weapon_damage = int(input('how much can your weapon damage people? '))
+        return Weapon(name, weapon_damage)
     
     def create_armor(self):
         '''

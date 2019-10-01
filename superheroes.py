@@ -91,7 +91,7 @@ class Hero:
         '''
         total = 0
         for armor in self.armors:
-            total += armor.block
+            total += armor.block()
         return total
 
     def take_damage(self, damage):
@@ -199,7 +199,7 @@ class Arena:
                 if 'y' not in extra_ability.lower():
                     break
         
-        add_weapon = input('Alright, time to add some abilties! Answer y/n')
+        add_weapon = input('Alright, time to add some weapons! Answer y/n')
         if 'y' in add_weapon.lower():
             while True:
                 weapon = self.create_weapon()
@@ -218,7 +218,7 @@ class Arena:
                     break
         
         return hero
-        
+
     def build_team_one(self):
         '''Prompt the user to build team_one '''
         # TODO: This method should allow a user to create team one.
@@ -352,7 +352,7 @@ class Team:
         '''
         sum = 0
         for hero in self.heroes:
-            sum += hero.view_stats
+            sum += hero.view_stats()
             return  sum
 
 
